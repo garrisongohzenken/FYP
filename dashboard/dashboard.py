@@ -24,7 +24,7 @@ from joblib import load
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-CSV_PATH = "tech_salary_data_CLEANED.csv"
+CSV_PATH = "data/tech_salary_data_CLEANED.csv"
 TARGET = "totalyearlycompensation"
 
 NUM_FEATS = ["yearsofexperience", "yearsatcompany"]

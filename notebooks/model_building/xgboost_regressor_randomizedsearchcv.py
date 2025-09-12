@@ -15,16 +15,12 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, RandomizedSearchCV, KFold
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from utils.model_io import save_model
-
-try:
-    from xgboost import XGBRegressor
-except ImportError as e:
-    raise SystemExit("Please install XGBoost:  pip install xgboost") from e
+from xgboost import XGBRegressor
 
 # -----------------------------
 # 1) Load & target
 # -----------------------------
-CSV_PATH = "tech_salary_data_CLEANED.csv"
+CSV_PATH = "data/tech_salary_data_CLEANED.csv"
 TARGET = "totalyearlycompensation"
 
 df = pd.read_csv(CSV_PATH).dropna(subset=[TARGET]).copy()

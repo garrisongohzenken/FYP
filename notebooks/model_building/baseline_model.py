@@ -9,12 +9,12 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import math
 import matplotlib.pyplot as plt
-from utils.model_io import save_model
+# from utils.model_io import save_model
 
 # -----------------------------
 # 1. Load dataset
 # -----------------------------
-df = pd.read_csv("tech_salary_data_CLEANED.csv")
+df = pd.read_csv("data/tech_salary_data_CLEANED.csv")
 
 # Target variable
 TARGET = "totalyearlycompensation"
@@ -54,8 +54,8 @@ model = LinearRegression()
 model.fit(X_train, y_train)
 
 # Save model (timestamped filename)
-model_path = save_model(model, base_name="baseline_linear_regression", timestamp=True)
-print(f"Saved model to: {model_path}")
+# model_path = save_model(model, base_name="baseline_linear_regression", timestamp=True)
+# print(f"Saved model to: {model_path}")
 
 # -----------------------------
 # 6. Predict & Evaluate

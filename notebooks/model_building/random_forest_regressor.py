@@ -20,7 +20,7 @@ from utils.model_io import save_model
 # --------------------------------
 # 1) Load dataset
 # --------------------------------
-CSV_PATH = "tech_salary_data_CLEANED.csv"
+CSV_PATH = "data/tech_salary_data_CLEANED.csv"
 TARGET = "totalyearlycompensation"
 
 df = pd.read_csv(CSV_PATH).dropna(subset=[TARGET]).copy()

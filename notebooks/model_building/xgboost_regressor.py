@@ -85,7 +85,7 @@ xgb.fit(
 )
 
 # Save model (timestamped filename)
-model_path = save_model(xgb, base_name="xgboost", timestamp=True)
+model_path = save_model(xgb, base_name="xgboost_no_tuning", timestamp=True)
 print(f"Saved model to: {model_path}")
 
 # -----------------------------

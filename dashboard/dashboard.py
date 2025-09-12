@@ -2,7 +2,7 @@
 Streamlit Dashboard for Tech Salary Models
 
 Features:
-- Load latest saved model from Models/ (timestamped joblib files)
+- Load latest saved model from models/ (timestamped joblib files)
 - Replicate preprocessing (manual OHE) to ensure proper feature alignment
 - Evaluate on consistent 75/25 train/test split and display MAE/RMSE/R2
 - Plot Train/Test Actual vs Predicted, and top-20 feature importances or coefficients
@@ -32,12 +32,12 @@ CAT_FEATS = ["title", "location", "gender", "Race", "Education"]
 
 
 # ---------- Utilities ----------
-def list_models_for(base_name: str, models_dir: str = "Models") -> List[str]:
+def list_models_for(base_name: str, models_dir: str = "models") -> List[str]:
     pattern = os.path.join(models_dir, f"{base_name}_*.joblib")
     return sorted(glob(pattern))
 
 
-def latest_model_for(base_name: str, models_dir: str = "Models") -> Optional[str]:
+def latest_model_for(base_name: str, models_dir: str = "models") -> Optional[str]:
     files = list_models_for(base_name, models_dir)
     return files[-1] if files else None
 
@@ -109,8 +109,8 @@ custom_model = st.sidebar.file_uploader("Or upload a .joblib model", type=["jobl
 model_path = None
 if custom_model is not None:
     # Save to a temp file so joblib can load it
-    tmp_path = os.path.join("Models", f"uploaded_{custom_model.name}")
-    os.makedirs("Models", exist_ok=True)
+    tmp_path = os.path.join("models", f"uploaded_{custom_model.name}")
+    os.makedirs("models", exist_ok=True)
     with open(tmp_path, "wb") as f:
         f.write(custom_model.getbuffer())
     model_path = tmp_path
@@ -118,7 +118,7 @@ else:
     model_path = latest_path
 
 if not model_path or not os.path.exists(model_path):
-    st.warning(f"No saved model found for '{preset}'. Train a model to Models/ first.")
+    st.warning(f"No saved model found for '{preset}'. Train a model to models/ first.")
     st.stop()
 
 st.sidebar.write(f"Loaded model: {os.path.basename(model_path)}")

@@ -90,6 +90,57 @@ def compute_metrics(y_true: pd.Series, y_pred: np.ndarray) -> Tuple[float, float
 st.set_page_config(page_title="Tech Salary Models Dashboard", layout="wide")
 st.title("Tech Salary Models Dashboard")
 
+# Appearance controls
+st.sidebar.header("Appearance")
+theme_choice = st.sidebar.selectbox("Theme", ["Dark", "Light"], index=0)
+is_dark = theme_choice == "Dark"
+
+theme_colors = (
+    {
+        "bg": "#0B1220",
+        "panel": "#111827",
+        "text": "#F9FAFB",
+        "primary": "#60A5FA",
+        "line": "#9CA3AF",
+        "plotly_template": "plotly_dark",
+    }
+    if is_dark
+    else {
+        "bg": "#FFFFFF",
+        "panel": "#F8FAFC",
+        "text": "#111827",
+        "primary": "#3B82F6",
+        "line": "#374151",
+        "plotly_template": "plotly_white",
+    }
+)
+
+# Minimal CSS override to simulate theme switching at runtime
+st.markdown(
+    f"""
+    <style>
+      [data-testid="stAppViewContainer"] {{
+        background-color: {theme_colors['bg']};
+        color: {theme_colors['text']};
+      }}
+      [data-testid="stHeader"] {{
+        background: {theme_colors['bg']};
+      }}
+      [data-testid="stSidebar"] > div {{
+        background-color: {theme_colors['panel']};
+      }}
+      .stButton>button, .stDownloadButton>button {{
+        background-color: {theme_colors['primary']};
+        color: #ffffff;
+      }}
+      h1, h2, h3, h4, h5, h6, label, p, span {{
+        color: {theme_colors['text']};
+      }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.sidebar.header("Model Selection")
 model_presets = {
     "Baseline Linear Regression": "baseline_linear_regression",
@@ -167,7 +218,7 @@ test_mae, test_rmse, test_r2 = compute_metrics(y_test, test_preds)
 
 left, right = st.columns(2)
 with left:
-    st.subheader("Metrics")
+    st.subheader("Model Performance Metrics")
     st.markdown(
         f"""
         - Train MAE: {train_mae:,.2f}
@@ -203,9 +254,16 @@ with right:
             "Train": "#3B82F6",  # Blue
             "Test": "#EC4899",   # Pink
         },
-        template="plotly_dark",
+        template=theme_colors["plotly_template"],
     )
-    fig.add_shape(type="line", x0=min_y, y0=min_y, x1=max_y, y1=max_y, line=dict(dash="dash", color="#9CA3AF"))
+    fig.add_shape(
+        type="line",
+        x0=min_y,
+        y0=min_y,
+        x1=max_y,
+        y1=max_y,
+        line=dict(dash="dash", color=theme_colors["line"]),
+    )
     fig.update_layout(xaxis_range=[min_y, max_y], yaxis_range=[min_y, max_y])
     st.plotly_chart(fig, use_container_width=True)
 
@@ -229,7 +287,7 @@ if importances is not None:
         y=topk_sorted.index,
         orientation="h",
         height=420,
-        template="plotly_dark",
+        template=theme_colors["plotly_template"],
     )
     fig_imp.update_traces(marker_color="#3B82F6")  # Blue bars
     fig_imp.update_layout(xaxis_title="Importance / |Coefficient|", yaxis_title="Feature")

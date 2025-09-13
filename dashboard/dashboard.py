@@ -106,8 +106,8 @@ theme_colors = (
     }
     if is_dark
     else {
-        "bg": "#FFFFFF",
-        "panel": "#F8FAFC",
+        "bg": "#59cbff",
+        "panel": "#597aff",
         "text": "#111827",
         "primary": "#3B82F6",
         "line": "#374151",
@@ -133,9 +133,34 @@ st.markdown(
         background-color: {theme_colors['primary']};
         color: #ffffff;
       }}
-      h1, h2, h3, h4, h5, h6, label, p, span {{
-        color: {theme_colors['text']};
-      }}
+      /* Ensure headings (including st.subheader) adopt theme text color */
+      .stApp .block-container h1,
+      .stApp .block-container h2,
+      .stApp .block-container h3,
+      .stApp .block-container h4,
+      .stApp .block-container h5,
+      .stApp .block-container h6,
+      [data-testid="stSidebar"] h1,
+      [data-testid="stSidebar"] h2,
+      [data-testid="stSidebar"] h3,
+      [data-testid="stSidebar"] h4,
+      [data-testid="stSidebar"] h5,
+      [data-testid="stSidebar"] h6,
+      [data-testid="stMarkdownContainer"] h1,
+      [data-testid="stMarkdownContainer"] h2,
+      [data-testid="stMarkdownContainer"] h3,
+      [data-testid="stMarkdownContainer"] h4,
+      [data-testid="stMarkdownContainer"] h5,
+      [data-testid="stMarkdownContainer"] h6,
+      .stMarkdown h1,
+      .stMarkdown h2,
+      .stMarkdown h3,
+      .stMarkdown h4,
+      .stMarkdown h5,
+      .stMarkdown h6,
+      label, p, span {
+        color: {theme_colors['text']} !important;
+      }
     </style>
     """,
     unsafe_allow_html=True,

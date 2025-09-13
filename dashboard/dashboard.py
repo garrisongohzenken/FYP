@@ -158,9 +158,9 @@ st.markdown(
       .stMarkdown h4,
       .stMarkdown h5,
       .stMarkdown h6,
-      label, p, span {
+      label, p, span {{
         color: {theme_colors['text']} !important;
-      }
+      }}
     </style>
     """,
     unsafe_allow_html=True,

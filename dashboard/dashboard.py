@@ -106,7 +106,7 @@ theme_colors = (
     }
     if is_dark
     else {
-        "bg": "#59cbff",
+        "bg": "#7a95ff",
         "panel": "#597aff",
         "text": "#111827",
         "primary": "#3B82F6",
@@ -160,6 +160,34 @@ st.markdown(
       .stMarkdown h6,
       label, p, span {{
         color: {theme_colors['text']} !important;
+      }}
+
+      /* Sidebar selectboxes (Streamlit uses BaseWeb select) */
+      [data-testid="stSidebar"] [data-baseweb="select"] > div {{
+        background-color: {theme_colors['panel']};
+        color: {theme_colors['text']};
+        border-color: {theme_colors['line']};
+      }}
+      [data-testid="stSidebar"] [data-baseweb="select"] div[role="combobox"],
+      [data-testid="stSidebar"] [data-baseweb="select"] div[role="combobox"] * {{
+        color: {theme_colors['text']} !important;
+      }}
+      [data-testid="stSidebar"] [data-baseweb="select"] svg {{
+        fill: {theme_colors['text']};
+        color: {theme_colors['text']};
+      }}
+      /* Dropdown menu (rendered in a portal/popover) */
+      .stApp [data-baseweb="popover"] [role="listbox"] {{
+        background-color: {theme_colors['panel']};
+        color: {theme_colors['text']};
+        border: 1px solid {theme_colors['line']};
+      }}
+      .stApp [data-baseweb="popover"] [role="option"] {{
+        color: {theme_colors['text']};
+      }}
+      .stApp [data-baseweb="popover"] [role="option"][aria-selected="true"],
+      .stApp [data-baseweb="popover"] [role="option"]:hover {{
+        background-color: {theme_colors['bg']};
       }}
     </style>
     """,

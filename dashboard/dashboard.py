@@ -203,9 +203,9 @@ with right:
             "Train": "#3B82F6",  # Blue
             "Test": "#EC4899",   # Pink
         },
-        template="plotly_white",
+        template="plotly_dark",
     )
-    fig.add_shape(type="line", x0=min_y, y0=min_y, x1=max_y, y1=max_y, line=dict(dash="dash", color="black"))
+    fig.add_shape(type="line", x0=min_y, y0=min_y, x1=max_y, y1=max_y, line=dict(dash="dash", color="#9CA3AF"))
     fig.update_layout(xaxis_range=[min_y, max_y], yaxis_range=[min_y, max_y])
     st.plotly_chart(fig, use_container_width=True)
 
@@ -229,7 +229,7 @@ if importances is not None:
         y=topk_sorted.index,
         orientation="h",
         height=420,
-        template="plotly_white",
+        template="plotly_dark",
     )
     fig_imp.update_traces(marker_color="#3B82F6")  # Blue bars
     fig_imp.update_layout(xaxis_title="Importance / |Coefficient|", yaxis_title="Feature")

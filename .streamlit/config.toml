@@ -1,8 +1,8 @@
 [theme]
-# Blue and pink theme
-primaryColor = "#3B82F6"            # Blue
-backgroundColor = "#FFFFFF"          # White background
-secondaryBackgroundColor = "#FDF2F8" # Light pink panel background
-textColor = "#111827"                # Near-black text
+# Dark mode with blue/pink accents
+base = "dark"
+primaryColor = "#60A5FA"             # Light blue accent
+backgroundColor = "#0B1220"          # Very dark navy
+secondaryBackgroundColor = "#111827" # Dark gray panels
+textColor = "#F9FAFB"                # Near-white text
 font = "sans serif"
-

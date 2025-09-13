@@ -20,6 +20,7 @@ from typing import List, Optional, Tuple
 import numpy as np
 import pandas as pd
 import streamlit as st
+import plotly.express as px
 from joblib import load
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -180,7 +181,6 @@ with left:
 
 with right:
     st.subheader("Actual vs Predicted")
-    import plotly.express as px
 
     min_y = float(min(y_train.min(), y_test.min(), train_preds.min(), test_preds.min()))
     max_y = float(max(y_train.max(), y_test.max(), train_preds.max(), test_preds.max()))
@@ -192,7 +192,19 @@ with right:
             "Split": ["Train"] * len(y_train) + ["Test"] * len(y_test),
         }
     )
-    fig = px.scatter(df_plot, x="Actual", y="Predicted", color="Split", opacity=0.6, height=400)
+    fig = px.scatter(
+        df_plot,
+        x="Actual",
+        y="Predicted",
+        color="Split",
+        opacity=0.6,
+        height=400,
+        color_discrete_map={
+            "Train": "#3B82F6",  # Blue
+            "Test": "#EC4899",   # Pink
+        },
+        template="plotly_white",
+    )
     fig.add_shape(type="line", x0=min_y, y0=min_y, x1=max_y, y1=max_y, line=dict(dash="dash", color="black"))
     fig.update_layout(xaxis_range=[min_y, max_y], yaxis_range=[min_y, max_y])
     st.plotly_chart(fig, use_container_width=True)
@@ -211,7 +223,17 @@ except Exception:
 
 if importances is not None:
     topk = importances.sort_values(ascending=False).head(20)
-    st.bar_chart(topk.sort_values())
+    topk_sorted = topk.sort_values()
+    fig_imp = px.bar(
+        x=topk_sorted.values,
+        y=topk_sorted.index,
+        orientation="h",
+        height=420,
+        template="plotly_white",
+    )
+    fig_imp.update_traces(marker_color="#3B82F6")  # Blue bars
+    fig_imp.update_layout(xaxis_title="Importance / |Coefficient|", yaxis_title="Feature")
+    st.plotly_chart(fig_imp, use_container_width=True)
 else:
     st.info("This model does not expose importances/coefficients.")
 

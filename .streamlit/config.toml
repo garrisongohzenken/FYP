@@ -1,0 +1,8 @@
+[theme]
+# Blue and pink theme
+primaryColor = "#3B82F6"            # Blue
+backgroundColor = "#FFFFFF"          # White background
+secondaryBackgroundColor = "#FDF2F8" # Light pink panel background
+textColor = "#111827"                # Near-black text
+font = "sans serif"
+

@@ -20,7 +20,6 @@ from typing import List, Optional, Tuple
 import numpy as np
 import pandas as pd
 import streamlit as st
-import plotly.express as px
 from joblib import load
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -90,109 +89,23 @@ def compute_metrics(y_true: pd.Series, y_pred: np.ndarray) -> Tuple[float, float
 st.set_page_config(page_title="Tech Salary Models Dashboard", layout="wide")
 st.title("Tech Salary Models Dashboard")
 
-# Appearance controls
-st.sidebar.header("Appearance")
-theme_choice = st.sidebar.selectbox("Theme", ["Dark", "Light"], index=0)
-is_dark = theme_choice == "Dark"
-
-theme_colors = (
-    {
-        "bg": "#0B1220",
-        "panel": "#111827",
-        "text": "#F9FAFB",
-        "primary": "#60A5FA",
-        "line": "#9CA3AF",
-        "plotly_template": "plotly_dark",
-    }
-    if is_dark
-    else {
-        "bg": "#7a95ff",
-        "panel": "#597aff",
-        "text": "#111827",
-        "primary": "#3B82F6",
-        "line": "#374151",
-        "plotly_template": "plotly_white",
-    }
-)
-
-# Minimal CSS override to simulate theme switching at runtime
+# Use Inter font across the app
 st.markdown(
-    f"""
+    """
     <style>
-      [data-testid="stAppViewContainer"] {{
-        background-color: {theme_colors['bg']};
-        color: {theme_colors['text']};
-      }}
-      [data-testid="stHeader"] {{
-        background: {theme_colors['bg']};
-      }}
-      [data-testid="stSidebar"] > div {{
-        background-color: {theme_colors['panel']};
-      }}
-      .stButton>button, .stDownloadButton>button {{
-        background-color: {theme_colors['primary']};
-        color: #ffffff;
-      }}
-      /* Ensure headings (including st.subheader) adopt theme text color */
-      .stApp .block-container h1,
-      .stApp .block-container h2,
-      .stApp .block-container h3,
-      .stApp .block-container h4,
-      .stApp .block-container h5,
-      .stApp .block-container h6,
-      [data-testid="stSidebar"] h1,
-      [data-testid="stSidebar"] h2,
-      [data-testid="stSidebar"] h3,
-      [data-testid="stSidebar"] h4,
-      [data-testid="stSidebar"] h5,
-      [data-testid="stSidebar"] h6,
-      [data-testid="stMarkdownContainer"] h1,
-      [data-testid="stMarkdownContainer"] h2,
-      [data-testid="stMarkdownContainer"] h3,
-      [data-testid="stMarkdownContainer"] h4,
-      [data-testid="stMarkdownContainer"] h5,
-      [data-testid="stMarkdownContainer"] h6,
-      .stMarkdown h1,
-      .stMarkdown h2,
-      .stMarkdown h3,
-      .stMarkdown h4,
-      .stMarkdown h5,
-      .stMarkdown h6,
-      label, p, span {{
-        color: {theme_colors['text']} !important;
-      }}
-
-      /* Sidebar selectboxes (Streamlit uses BaseWeb select) */
-      [data-testid="stSidebar"] [data-baseweb="select"] > div {{
-        background-color: {theme_colors['panel']};
-        color: {theme_colors['text']};
-        border-color: {theme_colors['line']};
-      }}
-      [data-testid="stSidebar"] [data-baseweb="select"] div[role="combobox"],
-      [data-testid="stSidebar"] [data-baseweb="select"] div[role="combobox"] * {{
-        color: {theme_colors['text']} !important;
-      }}
-      [data-testid="stSidebar"] [data-baseweb="select"] svg {{
-        fill: {theme_colors['text']};
-        color: {theme_colors['text']};
-      }}
-      /* Dropdown menu (rendered in a portal/popover) */
-      .stApp [data-baseweb="popover"] [role="listbox"] {{
-        background-color: {theme_colors['panel']};
-        color: {theme_colors['text']};
-        border: 1px solid {theme_colors['line']};
-      }}
-      .stApp [data-baseweb="popover"] [role="option"] {{
-        color: {theme_colors['text']};
-      }}
-      .stApp [data-baseweb="popover"] [role="option"][aria-selected="true"],
-      .stApp [data-baseweb="popover"] [role="option"]:hover {{
-        background-color: {theme_colors['bg']};
-      }}
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+      html, body, [data-testid="stAppViewContainer"],
+      .stMarkdown, .stButton>button, .stDownloadButton>button,
+      [data-testid="stSidebar"] * {
+        font-family: 'Inter', sans-serif !important;
+      }
+      h1, h2, h3, h4, h5, h6 { font-family: 'Inter', sans-serif !important; }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
+import plotly.express as px
 
 st.sidebar.header("Model Selection")
 model_presets = {
@@ -303,21 +216,13 @@ with right:
         color="Split",
         opacity=0.6,
         height=400,
-        color_discrete_map={
-            "Train": "#3B82F6",  # Blue
-            "Test": "#EC4899",   # Pink
-        },
-        template=theme_colors["plotly_template"],
     )
-    fig.add_shape(
-        type="line",
-        x0=min_y,
-        y0=min_y,
-        x1=max_y,
-        y1=max_y,
-        line=dict(dash="dash", color=theme_colors["line"]),
+    fig.add_shape(type="line", x0=min_y, y0=min_y, x1=max_y, y1=max_y, line=dict(dash="dash", color="black"))
+    fig.update_layout(
+        xaxis_range=[min_y, max_y],
+        yaxis_range=[min_y, max_y],
+        font=dict(family="Inter, sans-serif"),
     )
-    fig.update_layout(xaxis_range=[min_y, max_y], yaxis_range=[min_y, max_y])
     st.plotly_chart(fig, use_container_width=True)
 
 # Importance / coefficients
@@ -334,17 +239,7 @@ except Exception:
 
 if importances is not None:
     topk = importances.sort_values(ascending=False).head(20)
-    topk_sorted = topk.sort_values()
-    fig_imp = px.bar(
-        x=topk_sorted.values,
-        y=topk_sorted.index,
-        orientation="h",
-        height=420,
-        template=theme_colors["plotly_template"],
-    )
-    fig_imp.update_traces(marker_color="#3B82F6")  # Blue bars
-    fig_imp.update_layout(xaxis_title="Importance / |Coefficient|", yaxis_title="Feature")
-    st.plotly_chart(fig_imp, use_container_width=True)
+    st.bar_chart(topk.sort_values())
 else:
     st.info("This model does not expose importances/coefficients.")
 

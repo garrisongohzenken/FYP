@@ -1,8 +1,18 @@
 [theme]
-# Dark mode with blue/pink accents
-base = "dark"
-primaryColor = "#60A5FA"             # Light blue accent
-backgroundColor = "#0B1220"          # Very dark navy
-secondaryBackgroundColor = "#111827" # Dark gray panels
-textColor = "#F9FAFB"                # Near-white text
+
+# Primary accent for interactive elements
+primaryColor = '#77e387ff'
+
+# Background color for the main content area
+backgroundColor = '#1d1d1dff'
+
+# Background color for sidebar and most interactive widgets
+secondaryBackgroundColor = '#292929ff'
+
+# Color used for almost all text
+textColor = '#ffffffff'
+
+# Font family for all text in the app, except code blocks
+# Accepted values (serif | sans serif | monospace) 
+# Default: "sans serif"
 font = "sans serif"

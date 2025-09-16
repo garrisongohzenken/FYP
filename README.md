@@ -1,18 +1,51 @@
-# Tech Salary Modeling & Streamlit Dashboard
+# Tech Salary Prediction Project
 
-A lightweight end‑to‑end project to explore, model, and visualize tech salary predictions. It includes data prep notebooks, multiple regression models (baseline linear, Random Forest, XGBoost), and a Streamlit dashboard for evaluation and interactive inference.
-
-## Features
-- Multiple models: baseline linear regression, Random Forest, XGBoost (with/without tuning)
-- Consistent preprocessing: manual one‑hot encoding aligned to model features
-- Evaluation on a fixed 75/25 split with MAE, RMSE, and R²
-- Visuals: Actual vs Predicted scatter, Top‑k feature importance/coefficients
-- Inference: single input form and CSV batch predictions
-- Model management: auto‑loads the latest timestamped `.joblib` per model type; manual upload supported
-- Dark theme with blue/pink accents (configurable)
+An end-to-end machine learning project focused on predicting tech industry salaries using various regression models. The project includes comprehensive data preprocessing, exploratory data analysis, multiple model implementations, and a Streamlit dashboard for interactive predictions.
 
 ## Project Structure
-- `data/` — Source data
+- `data/` - Raw and cleaned salary datasets
+- `notebooks/`
+  - `data_preparation/` - Data preprocessing and exploratory analysis notebooks
+  - `model_building/` - Various model implementations and experiments
+    - Baseline models (Linear Regression)
+    - Tree-based models (Random Forest, XGBoost)
+    - LightGBM implementations
+    - CatBoost implementation
+    - Model utilities and helpers
+- `models/` - Saved model artifacts and configurations
+- `dashboard/` - Streamlit dashboard for model deployment
+- `requirements.txt` - Project dependencies
+
+## Features
+- Multiple model implementations:
+  - Baseline Linear Regression
+  - Random Forest (with GridSearch optimization)
+  - XGBoost (with manual tuning and HalvingSearch)
+  - LightGBM (baseline and optimized versions)
+  - CatBoost implementation
+- Data processing:
+  - Comprehensive exploratory data analysis
+  - Feature engineering and preprocessing
+  - Target encoding for categorical variables
+- Model evaluation:
+  - Train/test split validation
+  - Multiple metrics (MAE, MSE, R²)
+- Interactive dashboard:
+  - Real-time predictions
+  - Model performance visualization
+  - Feature importance analysis
+
+## Dependencies
+Key requirements:
+- streamlit >= 1.25
+- pandas >= 1.5
+- scikit-learn >= 1.2
+- xgboost >= 1.7
+- lightgbm >= 4.0
+- catboost (latest version)
+- category-encoders >= 2.6
+
+See `requirements.txt` for complete list of dependencies.
   - `data/tech_salary_data_CLEANED.csv`
 - `notebooks/` — EDA, preprocessing, and model building
   - `notebooks/data_preparation/exploratory_data_analysis.ipynb`

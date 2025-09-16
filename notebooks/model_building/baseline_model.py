@@ -26,7 +26,7 @@ df = df.dropna(subset=[TARGET]).copy()
 # 2. Select features
 # -----------------------------
 num_feats = [c for c in ["yearsofexperience", "yearsatcompany"] if c in df.columns]
-cat_feats = [c for c in ["title", "location", "gender", "Race", "Education"] if c in df.columns]
+cat_feats = [c for c in ["company", "title", "country", "gender", "Race", "Education"] if c in df.columns]
 
 X = df[num_feats + cat_feats]
 y = df[TARGET].astype(float)

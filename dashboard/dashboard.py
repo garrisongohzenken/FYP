@@ -16,8 +16,8 @@ import streamlit as st
 import toml
 import os
 
-# Get the directory of the current script
-config_path = "..\.streamlit\config.toml"
+# Connect config for theme
+config_path = "../.streamlit/config.toml"
 
 if os.path.exists(config_path):
     with open(config_path, 'r') as f:
@@ -181,14 +181,14 @@ sections = [
 ]
 try:
     params = st.query_params
-    section = params.get("section", "M O D E L")
+    section = params.get("section", "A B O U T")
     if isinstance(section, list):
-        section = section[0] if section else "M O D E L"
+        section = section[0] if section else "A B O U T"
 except Exception:
     params = st.experimental_get_query_params()
-    section = params.get("section", ["M O D E L"])[0]
+    section = params.get("section", ["A B O U T"])[0]
 if section not in sections:
-    section = "M O D E L"
+    section = "A B O U T"
 
 # Render plain-text looking links that navigate in-place (no new tab)
 nav_items = []
@@ -613,6 +613,16 @@ if section == "F E A T U R E⠀ I M P O R T A N C E":
 # ---------- Single Prediction ----------
 if section == "S I N G L E⠀ P R E D I C T I O N":
     st.subheader("Single Prediction")
+    st.markdown("")
+    st.markdown(
+        "<div style='text-align:justify;'>"
+        "This section allows you to input individual data points to predict the total yearly compensation of an individual. "
+        "</div>"
+        ,unsafe_allow_html=True
+    )
+    st.markdown("")
+
+
     with st.form("single_input_form"):
         c1, c2 = st.columns(2)
         with c1:
@@ -672,6 +682,13 @@ if section == "S I N G L E⠀ P R E D I C T I O N" and submitted:
 
 if section == "B A T C H⠀ P R E D I C T I O N":
     st.subheader("Batch Prediction (CSV)")
+    st.markdown("")
+    st.markdown(
+        "<div style='text-align:justify;'>"
+        "This section allows you to input a batch of data to predict the total yearly compensation of multiple individuals. "
+        "</div>"
+        ,unsafe_allow_html=True
+    )
     st.write("Upload a CSV with columns: yearsofexperience, yearsatcompany, company, title, Country, gender, Race, Education")
     batch_file = st.file_uploader("Upload CSV", type=["csv"], accept_multiple_files=False, key="batch")
 else:

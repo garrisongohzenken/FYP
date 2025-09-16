@@ -7,3 +7,4 @@ xgboost>=1.7
 joblib>=1.2
 lightgbm>=4.0
 category-encoders>=2.6
+catboost>=1.2.8

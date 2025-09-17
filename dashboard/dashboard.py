@@ -693,23 +693,84 @@ if section == "B A T C H⠀ P R E D I C T I O N":
     batch_file = st.file_uploader("Upload CSV", type=["csv"], accept_multiple_files=False, key="batch")
 else:
     batch_file = None
-if section == "B A T C H⠀P R E D I C T I O N" and batch_file is not None:
-    df_in = pd.read_csv(batch_file)
-    # Keep only relevant columns if present
-    cols = [c for c in NUM_FEATS + CAT_FEATS if c in df_in.columns]
-    if not cols:
-        st.error("No expected columns found in uploaded file.")
-    else:
-        # For batch, replicate TE+OHE pipeline then align
-        Xb = df_in[cols].copy()
-        parts = [Xb[[c for c in NUM_FEATS if c in Xb.columns]]]
-        if 'te_cols' in globals() and te_cols:
-            y_te_tmp = np.log1p(y_train) if model_outputs_log else y_train
-            try:
-                te_encoder = te_encoder.fit(X_train_raw[te_cols], y_te_tmp)
-                parts.append(te_encoder.transform(Xb[[c for c in te_cols if c in Xb.columns]]))
-            except Exception:
-                pass
+if section == "B A T C H⠀ P R E D I C T I O N" and batch_file is not None:
+    try:
+        # Show upload success
+        st.info("File uploaded successfully. Processing...")
+        
+        # Load the CSV
+        df_in = pd.read_csv(batch_file)
+        st.write("Preview of uploaded data:")
+        st.dataframe(df_in.head())
+        
+        # Show available columns
+        st.write("Columns found in uploaded file:", list(df_in.columns))
+        st.write("Expected columns:", NUM_FEATS + CAT_FEATS)
+        
+        # Keep only relevant columns if present
+        cols = [c for c in NUM_FEATS + CAT_FEATS if c in df_in.columns]
+        if not cols:
+            st.error("No expected columns found in uploaded file.")
+        else:
+            st.success(f"Found {len(cols)} matching columns: {cols}")
+            
+            # For batch, replicate TE+OHE pipeline then align
+            Xb = df_in[cols].copy()
+            parts = [Xb[[c for c in NUM_FEATS if c in Xb.columns]]]
+            
+            # Get model output type from earlier in the code
+            model_outputs_log = bool(
+                not is_ttr and ("xgcatboost" in os.path.basename(model_path).lower() or "catboost" in os.path.basename(model_path).lower())
+            )
+            
+            # Handle target encoding if needed
+            if 'te_cols' in globals() and te_cols:
+                y_te_tmp = np.log1p(y_train) if model_outputs_log else y_train
+                try:
+                    te_encoder = te_encoder.fit(X_train_raw[te_cols], y_te_tmp)
+                    parts.append(te_encoder.transform(Xb[[c for c in te_cols if c in Xb.columns]]))
+                except Exception as e:
+                    st.error(f"Error during target encoding: {str(e)}")
+                    st.stop()
+            
+            # Handle one-hot encoding for remaining categorical features
+            oh = [c for c in CAT_FEATS if c in Xb.columns and (('te_cols' in globals() and c not in te_cols) or 'te_cols' not in globals())]
+            if oh:
+                parts.append(pd.get_dummies(Xb[oh], drop_first=False))
+            
+            # Combine all parts and align columns
+            Xb = pd.concat(parts, axis=1)
+            Xb_aligned = align_columns(Xb, feat_names)
+            
+            # Make predictions
+            st.info("Making predictions...")
+            preds = model.predict(Xb_aligned)
+            
+            # Convert predictions if needed
+            if model_outputs_log:
+                preds = np.expm1(preds)
+            
+            # Create output dataframe
+            out = df_in.copy()
+            out["predicted_totalyearlycompensation"] = preds
+            
+            # Show results preview
+            st.success("Predictions completed!")
+            st.write("Preview of predictions (first 20 rows):")
+            st.dataframe(out.head(20))
+            
+            # Offer download button
+            csv_bytes = out.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                "Download complete predictions",
+                data=csv_bytes,
+                file_name=f"salary_predictions_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                mime="text/csv"
+            )
+            
+    except Exception as e:
+        st.error(f"Error processing file: {str(e)}")
+        st.stop()
         oh = [c for c in CAT_FEATS if c in Xb.columns and (('te_cols' in globals() and c not in te_cols) or 'te_cols' not in globals())]
         if oh:
             parts.append(pd.get_dummies(Xb[oh], drop_first=False))

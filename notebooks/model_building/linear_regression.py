@@ -1,9 +1,7 @@
 # baseline_linear_regression_manual.py
 # Simple Linear Regression baseline WITHOUT sklearn Pipeline
 
-import os
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -58,24 +56,35 @@ model.fit(X_train, y_train)
 # print(f"Saved model to: {model_path}")
 
 # -----------------------------
-# 6. Predict & Evaluate
+# 6. Evaluate on Training Set
 # -----------------------------
-preds = model.predict(X_test)
-mae = mean_absolute_error(y_test, preds)
-rmse = math.sqrt(mean_squared_error(y_test, preds))
-r2 = r2_score(y_test, preds)
-
-print("=== Baseline Linear Regression Metrics ===")
-print(f"MAE:  {mae:.4f}")
-print(f"RMSE: {rmse:.4f}")
-print(f"R2:   {r2:.6f}")
-
-# -----------------------------
-# 7. Plots
-# -----------------------------
-# Compute predictions and residuals for train and test
 train_preds = model.predict(X_train)
-test_preds = preds
+train_mae = mean_absolute_error(y_train, train_preds)
+train_rmse = math.sqrt(mean_squared_error(y_train, train_preds))
+train_r2 = r2_score(y_train, train_preds)
+
+print("=== Baseline Linear Regression on Train ===")
+print(f"MAE:  {train_mae:.4f}")
+print(f"RMSE: {train_rmse:.4f}")
+print(f"R2:   {train_r2:.6f}")
+
+# -----------------------------
+# 7. Evaluate on Test Set
+# -----------------------------
+test_preds = model.predict(X_test)
+test_mae = mean_absolute_error(y_test, test_preds)
+test_rmse = math.sqrt(mean_squared_error(y_test, test_preds))
+test_r2 = r2_score(y_test, test_preds)
+
+print("\n=== Baseline Linear Regression on Test ===")
+print(f"MAE:  {test_mae:.4f}")
+print(f"RMSE: {test_rmse:.4f}")
+print(f"R2:   {test_r2:.6f}")
+
+# -----------------------------
+# 8. Plots
+# -----------------------------
+# Compute residuals for train and test
 resid_train = y_train - train_preds
 resid_test = y_test - test_preds
 

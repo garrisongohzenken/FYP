@@ -1,51 +1,103 @@
 # Tech Salary Prediction Project
 
-An end-to-end machine learning project focused on predicting tech industry salaries using various regression models. The project includes comprehensive data preprocessing, exploratory data analysis, multiple model implementations, and a Streamlit dashboard for interactive predictions.
+A comprehensive end-to-end machine learning project focused on predicting tech industry salaries using various regression models. The project demonstrates a complete ML pipeline from data preprocessing through model deployment, featuring multiple optimized models and an interactive dashboard.
+
+## Project Overview
+
+This project implements and compares several regression models for tech salary prediction:
+- Baseline Linear Regression (establishing fundamental performance metrics)
+- Random Forest (with extensive cross-validation optimization)
+- XGBoost (optimized using HalvingGridSearchCV for efficient parameter tuning)
+- CatBoost (leveraging advanced gradient boosting techniques)
+
+All models undergo thorough hyperparameter optimization using various cross-validation approaches (GridSearchCV, RandomizedSearchCV, HalvingGridSearchCV) to ensure optimal performance while maintaining computational efficiency.
 
 ## Project Structure
-- `data/` - Raw and cleaned salary datasets
-- `notebooks/`
-  - `data_preparation/` - Data preprocessing and exploratory analysis notebooks
-  - `model_building/` - Various model implementations and experiments
-    - Baseline models (Linear Regression)
-    - Tree-based models (Random Forest, XGBoost)
-    - LightGBM implementations
-    - CatBoost implementation
-    - Model utilities and helpers
-- `models/` - Saved model artifacts and configurations
-- `dashboard/` - Streamlit dashboard for model deployment
-- `requirements.txt` - Project dependencies
+```
+.
+├── data/                      # Dataset directory
+│   ├── tech_salary_data.csv          # Raw dataset
+│   └── tech_salary_data_CLEANED.csv  # Preprocessed dataset
+│
+├── notebooks/
+│   ├── data_preparation/             # Data processing notebooks
+│   │   ├── data_preprocessing.ipynb
+│   │   └── exploratory_data_analysis.ipynb
+│   │
+│   └── model_building/              # Model implementation
+│       ├── baseline_model.py        # Linear regression baseline
+│       ├── rf_backup.py            # Random Forest implementation
+│       ├── xgcatboost.py           # CatBoost implementation
+│       └── utils/                  # Helper functions
+│
+├── models/                    # Saved model artifacts
+├── dashboard/                 # Streamlit interface
+└── requirements.txt          # Project dependencies
+```
 
 ## Features
-- Multiple model implementations:
-  - Baseline Linear Regression
-  - Random Forest (with GridSearch optimization)
-  - XGBoost (with manual tuning and HalvingSearch)
-  - LightGBM (baseline and optimized versions)
-  - CatBoost implementation
-- Data processing:
-  - Comprehensive exploratory data analysis
-  - Feature engineering and preprocessing
-  - Target encoding for categorical variables
-- Model evaluation:
-  - Train/test split validation
-  - Multiple metrics (MAE, MSE, R²)
-- Interactive dashboard:
-  - Real-time predictions
-  - Model performance visualization
-  - Feature importance analysis
+
+### Data Processing
+- Comprehensive exploratory data analysis
+- Advanced feature engineering
+- Handling of high-cardinality categorical variables
+- Target encoding for complex categorical features
+- Log transformation for better salary distribution modeling
+
+### Model Implementation
+- Multiple model architectures with different strengths:
+  - Linear Regression (baseline performance)
+  - Random Forest (robust non-linear modeling)
+  - CatBoost (efficient handling of categorical variables)
+- Extensive hyperparameter tuning
+- Feature importance analysis
+- Cross-validated performance metrics
+
+### Model Evaluation
+- Train/Test performance analysis
+- Multiple evaluation metrics:
+  - Mean Absolute Error (MAE)
+  - Root Mean Square Error (RMSE)
+  - R² Score
+- Actual vs Predicted visualizations
+- Feature importance rankings
+
+### Interactive Dashboard
+- Real-time salary predictions
+- Model performance comparisons
+- Interactive feature importance visualization
+- Support for single predictions and batch processing
+
+## Setup and Installation
+
+1. Clone the repository
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+3. Run the Streamlit dashboard:
+```bash
+cd dashboard
+streamlit run dashboard.py
+```
 
 ## Dependencies
-Key requirements:
-- streamlit >= 1.25
+Core requirements:
+- Python >= 3.8
 - pandas >= 1.5
+- numpy >= 1.20
 - scikit-learn >= 1.2
-- xgboost >= 1.7
-- lightgbm >= 4.0
-- catboost (latest version)
+- catboost >= 1.2
+- streamlit >= 1.25
 - category-encoders >= 2.6
+- matplotlib >= 3.5
+- seaborn >= 0.12
 
 See `requirements.txt` for complete list of dependencies.
+
+## Model Performance
+
+Each model has been evaluated on both training and test sets. The evaluation metrics include MAE, RMSE, and R² scores to provide a comprehensive view of model performance. Detailed performance metrics and comparisons can be found in the respective model implementation files.
   - `data/tech_salary_data_CLEANED.csv`
 - `notebooks/` — EDA, preprocessing, and model building
   - `notebooks/data_preparation/exploratory_data_analysis.ipynb`
@@ -122,9 +174,4 @@ See `requirements.txt` for complete list of dependencies.
 - scikit‑learn, XGBoost, joblib
 - Streamlit, Plotly
 
-## License
-Add your preferred license here (e.g., MIT). If unspecified, this project remains unlicensed in public repositories.
-
-## Contributing
-Issues and PRs are welcome. For major changes, please open an issue first to discuss what you’d like to change.
 
